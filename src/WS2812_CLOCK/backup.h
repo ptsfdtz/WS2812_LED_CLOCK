@@ -200,49 +200,72 @@ void setLedXY(int x, int y, CRGB color){
 CRGB leds[NUM_LEDS];
 
 int calculateIndex(int x, int y) {
-    // 设定第一行y=1时的基准index
-    int baseIndex = 64; 
-    // 基于y的变化来计算
-    int adjustmentForY = ((y - 1) / 2) * (-26) + ((y - 1) % 2) * (-1);
-    // x的调整值
-    int adjustmentForX = (x - 1);
-
-    // 如果y是偶数，当x增加时，我们观察到增加1
-    // 如果y是奇数，当x增加时，观察到减少1
-    if (y % 2 == 0) {
-        adjustmentForX *= 1;
-    } else {
-        adjustmentForX *= -1;
-    }
-
-    // 计算最终的index
-    return baseIndex + adjustmentForY + adjustmentForX;
+  if (x > 13 || y > 5) return -1; // 若x或y超出范围则返回-1
+  
+  switch (y) {
+    case 1: return 65 - x;
+    case 2: return 38 + x;
+    case 3: return 39 - x;
+    case 4: return 12 + x;
+    case 5: return 13 - x;
+    default: return -1; // 若y不在1-5范围则返回-1
+  }
 }
 
 void setup() {
-    // // 初始化Serial通讯
-    // Serial.begin(9600);
-  
-    // // 等待串行端口开启
-    // while (!Serial) {
-    //     ; // 等待串行端口连接。只有在部分板上才需要
-    // }
-  
-    // // 测试几个坐标
-    // Serial.println("Test coordinates:");
-    // Serial.print("x=1, y=1, Index: ");
-    // Serial.println(calculateIndex(1, 1));
-    // Serial.print("x=2, y=1, Index: ");
-    // Serial.println(calculateIndex(2, 1));
-    // // 可以添加更多测试
   FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
   FastLED.setBrightness(BRIGHTNESS);
-  fill_solid(leds, NUM_LEDS, CRGB::Black); // 初始化所有灯珠为关闭状态
-  leds[calculateIndex(10,2)] = CRGB::Red;
+  fill_solid(leds, NUM_LEDS, CRGB::Black);
+  leds[calculateIndex(2, 1)] = CRGB::Red;
+  leds[calculateIndex(2, 2)] = CRGB::Red;
+  leds[calculateIndex(2, 3)] = CRGB::Red;
+  leds[calculateIndex(2, 4)] = CRGB::Red;
+  leds[calculateIndex(2, 5)] = CRGB::Red;
   FastLED.show();
 }
 
-void loop() {
-    // 如果需要重复计算，相关代码可以放在这里
-    // 在本例中，无需重复执行计算，因此loop()函数可以保持空
+void loop() {}
+
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//串口测试坐标
+int calculateIndex(int x, int y) {
+  if (x > 13 || y > 5) return -1; // 若x或y超出范围则返回-1
+  
+  switch (y) {
+    case 1: return 65 - x;
+    case 2: return 38 + x;
+    case 3: return 39 - x;
+    case 4: return 12 + x;
+    case 5: return 13 - x;
+    default: return -1; // 若y不在1-5范围则返回-1
+  }
 }
+
+void setup() {
+  Serial.begin(9600); // Start serial communication at 9600 baud rate
+  Serial.println("Enter coordinates in the format x,y:");
+}
+
+void loop() {
+  if (Serial.available() > 0) {
+    String input = Serial.readStringUntil('\n'); // Read the serial input until a newline character
+
+    int commaIndex = input.indexOf(','); // Find the index of the comma
+    if (commaIndex != -1 && commaIndex < input.length() - 1) {
+      int x = input.substring(0, commaIndex).toInt(); // Parse the x coordinate
+      int y = input.substring(commaIndex + 1).toInt(); // Parse the y coordinate
+
+      Serial.print("Index for x=");
+      Serial.print(x);
+      Serial.print(", y=");
+      Serial.print(y);
+      Serial.print(" is: ");
+
+      Serial.println(calculateIndex(x, y)); // Call the function and print the result
+    } else {
+      Serial.println("Invalid format. Please enter the coordinates in the format x,y:");
+    }
+  }
+}
+
