@@ -15,3 +15,11 @@ Record my production process, and I hope never forget my original intention.
 **MODEL design**
 
 ![model](./image/README/model.png)
+
+**display**
+
+![alt text](image/README/001.jpg)
+![alt text](image/README/002.jpg)
+![alt text](image/README/003.jpg)
+![alt text](image/README/004.jpg)
+![alt text](image/README/005.jpg)
