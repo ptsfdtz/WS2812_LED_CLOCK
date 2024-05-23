@@ -23,3 +23,7 @@ Record my production process, and I hope never forget my original intention.
 ![alt text](image/README/003.jpg)
 ![alt text](image/README/004.jpg)
 ![alt text](image/README/005.jpg)
+
+
+https://github.com/ptsfdtz/WS2812_LED_CLOCK/assets/148436840/9a490b34-cae3-49a7-b0c5-d45164b7b41f
+
